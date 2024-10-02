@@ -1,2 +1,2 @@
-#sudoku-algrithm
+# sudoku-algrithm
 Backend Development Pending
