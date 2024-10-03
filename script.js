@@ -1,5 +1,5 @@
 var all = []
-const fullSet = [1,2,3,4,5,6,7,8,9]
+const fullSet = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 var sudo = document.getElementById("sudo")
 
 function validate(e) {
@@ -26,12 +26,16 @@ for (let i = 1; i <= 81; i++) {
     inp.addEventListener("input", validate)
     all.push(inp)
 }
-//asssign classes to each unit
-for (let unit = 0; unit < all.length; unit++) {
-    all[unit].classList.add("col" + getClasses("col")[unit])
-    all[unit].classList.add("row" + getClasses("row")[unit])
-    all[unit].classList.add("grp" + getClasses("grp")[unit])
+function solve() {
+    //asssign classes to each unit
+    for (let unit = 0; unit < all.length; unit++) {
+        all[unit].classList.add("col" + getClasses("col")[unit])
+        all[unit].classList.add("row" + getClasses("row")[unit])
+        all[unit].classList.add("grp" + getClasses("grp")[unit])
+        all[unit].setAttribute("data-apv", getAPV(all[unit])) //apv = all possible values
+    }
 }
+
 function getClasses(type) {
     switch (type) {
         case "col":
@@ -77,7 +81,17 @@ function getClasses(type) {
             return grps
     }
 }
-
+function getAPV(unit) {
+    let colVals = document.getElementsByClassName(unit.classList[0])
+    let rowVals = document.getElementsByClassName(unit.classList[1])
+    let grpVals = document.getElementsByClassName(unit.classList[2])
+    // TODO: you are getting objects, but you need to get objject.values
+    // or do better, just sort thorough allVals and if it has class CHECKED then get val and store and run filter apv
+    const allVals = [...colVals, ...rowVals, ...grpVals]
+    let apv = [...fullSet]
+    apv = apv.filter(val => !allVals.includes(val))
+}
 
 let hed = document.getElementById("hed")
 hed.innerText = "hello"
+document.get
