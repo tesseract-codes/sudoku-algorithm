@@ -1,6 +1,20 @@
-var all = []
-const fullSet = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+var cells = []
+const full = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 var sudo = document.getElementById("sudo")
+var solved = false
+
+// Example sudoku puzzle
+var testCase = [
+    ["5", "3", "", "", "7", "", "", "", ""],
+    ["6", "", "", "1", "9", "5", "", "", ""],
+    ["", "9", "8", "", "", "", "", "6", ""],
+    ["8", "", "", "", "6", "", "", "", "3"],
+    ["4", "", "", "8", "", "3", "", "", "1"],
+    ["7", "", "", "", "2", "", "", "", "6"],
+    ["", "6", "", "", "", "", "2", "8", ""],
+    ["", "", "", "4", "1", "9", "", "", "5"],
+    ["", "", "", "", "8", "", "", "7", "9"],
+]
 
 function validate(e) {
     let val = e.target.value
@@ -11,11 +25,11 @@ function validate(e) {
         e.target.classList.add("checked")
     }
 }
-//create html and get each unit to all
+
+// Create grid
 for (let i = 1; i <= 81; i++) {
     let div = document.createElement("div")
     let inp = document.createElement("input")
-    // inp.setAttribute("type", "number");
     inp.setAttribute("min", "1")
     inp.setAttribute("max", "9")
     inp.setAttribute("maxlength", "1")
@@ -24,39 +38,50 @@ for (let i = 1; i <= 81; i++) {
     div.id = "u" + i
     inp.id = "k" + i
     inp.addEventListener("input", validate)
-    all.push(inp)
-}
-function solve() {
-    //asssign classes to each unit
-    for (let unit = 0; unit < all.length; unit++) {
-        all[unit].classList.add("col" + getClasses("col")[unit])
-        all[unit].classList.add("row" + getClasses("row")[unit])
-        all[unit].classList.add("grp" + getClasses("grp")[unit])
-        all[unit].setAttribute("data-apv", getAPV(all[unit])) //apv = all possible values
-    }
+    inp.addEventListener("click", showAPV)
+    cells.push(inp)
 }
 
-function getClasses(type) {
+function solve() {
+    for (let unit = 0; unit < cells.length; unit++) {
+        cells[unit].classList.add("col" + getClass("col")[unit])
+        cells[unit].classList.add("row" + getClass("row")[unit])
+        cells[unit].classList.add("grp" + getClass("grp")[unit])
+    }
+
+    for (let unit = 0; unit < cells.length; unit++) {
+        let val = parseInt(cells[unit].value)
+        if (!isNaN(val)) {
+            cells[unit].classList.add("checked")
+        }
+        cells[unit].setAttribute("data-apv", getAPV(cells[unit]))
+    }
+    count = 0
+    solved = false
+    while (!solved) {
+        fillMonoAPV()
+    }
+    colors = [...document.getElementsByClassName("solved")].forEach(element => {
+        element.parentElement.style.borderColor = "indigo"
+    })
+    solved = true
+}
+
+function getClass(type) {
     switch (type) {
         case "col":
-            //set column numbers for 1 to 9x9
             let cols = []
             for (i = 1; i <= 9; i++) {
-                //gets 9x{12345689}
                 for (j = 1; j <= 9; j++) {
-                    //gets 12345689
                     cols.push(j)
                 }
             }
             return cols
 
         case "row":
-            // set row numbers for 1 to 9x9
             let rows = []
             for (i = 1; i <= 9; i++) {
-                // gets 12345689
                 for (j = 1; j <= 9; j++) {
-                    //gets 9x{1*i}
                     rows.push(i)
                 }
             }
@@ -64,16 +89,11 @@ function getClasses(type) {
 
         case "grp":
             let grps = []
-            //set group numbers for 1 to 9x9
             for (k = 1; k <= 3; k++) {
-                //gets 3x{111.222.333} 3x{444.555.666} 3x{777.888.999}
                 for (m = 1; m <= 3; m++) {
-                    // gets 3x{111.222.333}
                     for (i = 1; i <= 3; i++) {
-                        // gets 111.222.333
                         for (j = 1; j <= 3; j++) {
-                            //gets 111
-                            grps.push(i + 3 * (k - 1)) // gets 1 (1 + 3*0) or 4 (1 + 3*1) or 7 (1 + 3*2)
+                            grps.push(i + 3 * (k - 1))
                         }
                     }
                 }
@@ -81,17 +101,97 @@ function getClasses(type) {
             return grps
     }
 }
+
 function getAPV(unit) {
-    let colVals = document.getElementsByClassName(unit.classList[0])
-    let rowVals = document.getElementsByClassName(unit.classList[1])
-    let grpVals = document.getElementsByClassName(unit.classList[2])
-    // TODO: you are getting objects, but you need to get objject.values
-    // or do better, just sort thorough allVals and if it has class CHECKED then get val and store and run filter apv
-    const allVals = [...colVals, ...rowVals, ...grpVals]
-    let apv = [...fullSet]
-    apv = apv.filter(val => !allVals.includes(val))
+    const related = [
+        ...document.getElementsByClassName(unit.classList[0]),
+        ...document.getElementsByClassName(unit.classList[1]),
+        ...document.getElementsByClassName(unit.classList[2]),
+    ]
+
+    let used = []
+
+    for (let el of related) {
+        if (el.classList.contains("checked")) {
+            let value = parseInt(el.value)
+            if (!isNaN(value)) {
+                used.push(value)
+                el.setAttribute("data-apv", value)
+            }
+        }
+    }
+
+    let apv = full.filter(val => !used.includes(val))
+    return apv
 }
 
-let hed = document.getElementById("hed")
-hed.innerText = "hello"
-document.get
+let head = document.getElementById("hed")
+
+function showAPV(e) {
+    if (solved) {
+        head.innerText = "APV: " + e.target.getAttribute("data-apv")
+    }
+}
+
+function getSudo() {
+    var grid = []
+    for (let i = 1; i <= 9; i++) {
+        var row = []
+        var rowCells = [...document.getElementsByClassName("row" + i)]
+        for (let unit of rowCells) {
+            row.push(unit.value)
+        }
+        grid.push(row)
+    }
+    return grid
+}
+
+function setSudo(grid) {
+    for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+            const val = grid[i][j]
+            const cell = cells[i * 9 + j]
+            if (val !== "") {
+                cell.value = val
+                cell.classList.add("checked")
+                cell.classList.add("orignal")
+                cell.setAttribute("data-apv", getAPV(cell))
+            } else {
+                cell.value = ""
+                cell.classList.remove("checked")
+                cell.removeAttribute("data-apv")
+            }
+        }
+    }
+}
+
+function clear() {
+    for (let unit in cells) {
+        cells[unit].value = ""
+    }
+}
+
+function fillMonoAPV() {
+    for (let unit = 0; unit < cells.length; unit++) {
+        cells[unit].setAttribute("data-apv", getAPV(cells[unit]))
+    }
+    for (unit in cells) {
+        if (
+            cells[unit].getAttribute("data-apv").length === 1 &&
+            !cells[unit].classList.contains("orignal")
+        ) {
+            cells[unit].value = cells[unit].getAttribute("data-apv")[0]
+            cells[unit].classList.add("checked")
+            cells[unit].classList.add("solved")
+        }
+    }
+    count++
+    head.innerText = "Number of iterations:" + count
+    if (count > 50) {
+        head.innerText("too many iterations")
+        return (solved = true)
+    }
+    if (document.getElementsByClassName("checked").length == 81) {
+        solved = true
+    }
+}
