@@ -40,4 +40,4 @@ Our solver uses a methodical process of analyzing the **Rows**, **Columns**, and
 We’re constantly improving! Advanced Sudoku puzzles, optimizations, and more features are coming soon.
 
 ## 👨‍💻 Instructions to Run
-Clone the repo and open `index.html` in your browser. Input your custom puzzle or try the example. Or try (here)[https://voidconsole.github.io/sudoku-algorithm]
+Clone the repo and open `index.html` in your browser. Input your custom puzzle or try the example. Or try [here](https://voidconsole.github.io/sudoku-algorithm)
