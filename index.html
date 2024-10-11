@@ -7,15 +7,14 @@
 		<link rel="stylesheet" href="style.css">
 	</head>
 	<body>
-		<!-- div>div*81.col$.row$.grp$#u$*81>input:number -->
-		<!-- or -->
 		<!-- div#sudo>div*81#u$>input:number#k$[name=in$][min=1][max=9].col.row.grp -->
-		<!-- col = 1.2.3.4....9.1.2.3, row = 1.1.1.1...1.2.2.2.2..3.3.....9.9.9, group, 1.1.1.2.2.2.3.3.3...1.1.1.2.2.2.3.3.3......7.7.7.8.8.8.9.9.9 -->
-		<h1 id="hed">The Ultimate Sudoku Solver</h1>
+		<h1>The Ultimate Sudoku Solver</h1>
+		<h2 id="hed"></h2>
 		<div id="sudo"> 
 			
 	</div>
-	<input type="submit" value="Solve!"></input>
+	<input type="submit" value="Solve!" onclick="solve()"></input>
+	<button title="Try example" type="button" value="Try Example" onclick="setSudo(testCase)">Try example</button>
 	<script type="text/javascript" src="./script.js"></script>
 	<!-- <script>document.getElementById("hed").innerText = "hello";</script> -->
 </body>
