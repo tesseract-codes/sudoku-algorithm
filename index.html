@@ -8,23 +8,50 @@
     </head>
     <body>
         <header>
-            <h1>The Ultimate Sudoku Solver</h1>
-            <p class="subtitle">
-                A visually stunning and interactive Sudoku solver, designed with simplicity and functionality in mind. Solve even the trickiest puzzles with ease!
+            <h1 class="fade-in">The Ultimate Sudoku Solver</h1>
+            <p class="subtitle fade-in">
+                A state-of-the-art solver for every Sudoku puzzle, from easy to diabolical.
             </p>
         </header>
 
         <main>
-            <h2 id="hed"></h2>
-            <div id="sudo"></div>
-            <div class="buttons">
+            <section class="intro fade-in-up">
+                <h2>What is the Sudoku Solver?</h2>
+                <p>
+                    This Sudoku Solver is designed to solve any Sudoku puzzle using advanced algorithms, ensuring fast and accurate results every time. Whether you're a casual puzzle solver or a Sudoku master, this tool will meet your needs.
+                </p>
+            </section>
+
+            <section class="features fade-in-up">
+                <h2>How Does it Work?</h2>
+                <p>
+                    Leveraging backtracking algorithms, constraint propagation, and other computational techniques, our solver works step-by-step to fill in missing numbers by eliminating possibilities. As you input your puzzle, it scans each cell and tries various combinations until it finds the correct solution.
+                </p>
+            </section>
+
+            <section class="steps fade-in-up">
+                <h2>Why Choose This Solver?</h2>
+                <ul>
+                    <li>Fast and accurate puzzle solving.</li>
+                    <li>Minimalistic and intuitive design.</li>
+                    <li>Handles puzzles of all difficulty levels.</li>
+                    <li>Interactive, allowing you to manually input and solve puzzles.</li>
+                    <li>Responsive and works on all devices, including mobile and tablet.</li>
+                </ul>
+            </section>
+
+            <div id="sudo" class="grid fade-in">
+                <!-- 9x9 Sudoku Grid Will Be Generated Here -->
+            </div>
+
+            <div class="buttons fade-in">
                 <input type="submit" value="Solve!" onclick="solve()"></input>
                 <button title="Try example" type="button" value="Try Example" onclick="setSudo(testCase)">Try example</button>
             </div>
         </main>
 
-        <footer>
-            <p>© 2024 Ultimate Sudoku Solver | Powered by voidconsole</p>
+        <footer class="fade-in">
+            <p>© 2024 Ultimate Sudoku Solver | Powered by <a href="https://github.com/voidconsole/sudoku-algorithm">voidconsole</a></p>
         </footer>
 
         <script type="text/javascript" src="./script.js"></script>
